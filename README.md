@@ -30,7 +30,7 @@ Feature scaling using StandardScaler
 
 
 📊 Model Used - 
-Linear Regression
+Linear Regression. 
 Model Performance - 
 R² Score (Train): ~0.83
 R² Score (Test): ~0.82
