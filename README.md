@@ -1,17 +1,17 @@
 Used Cars Price Prediction
 
-📌 Project Overview
+📌 Project Overview -
 This project predicts the selling price of used cars using Machine Learning.
 The model is trained on real car dataset and deployed using Streamlit as a web application.
 The goal is to estimate car price based on features like brand, year, engine, mileage, fuel type, etc.
 
 
-🧠 Problem Statement
+🧠 Problem Statement - 
 Used car prices vary depending on multiple factors.
 This project builds a regression model to predict car prices accurately based on historical data.
 
 
-⚙️ Technologies Used
+⚙️ Technologies Used - 
 Python
 Pandas
 NumPy
@@ -19,7 +19,7 @@ Scikit-learn
 Streamlit
 Pickle
 
-🔍 Data Preprocessing
+🔍 Data Preprocessing - 
 Removed missing values
 Removed duplicates
 Handled outliers
@@ -29,9 +29,9 @@ LabelEncoding for owner feature
 Feature scaling using StandardScaler
 
 
-📊 Model Used
+📊 Model Used - 
 Linear Regression
-Model Performance:
+Model Performance - 
 R² Score (Train): ~0.83
 R² Score (Test): ~0.82
 MAE: ~77,695
@@ -39,7 +39,7 @@ RMSE: ~106,605
 The model shows good generalization with minimal overfitting.
 
 
-🌐 Deployment
+🌐 Deployment - 
 The model is deployed using Streamlit.
 Users can input: 
 Year, 
