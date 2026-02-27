@@ -41,16 +41,16 @@ The model shows good generalization with minimal overfitting.
 
 🌐 Deployment
 The model is deployed using Streamlit.
-Users can input:
-Year
-KM Driven
-Mileage
-Engine Capacity
-Seats
-Owner Type
-Brand
-Fuel Type
-Transmission
+Users can input: 
+Year, 
+KM Driven,
+Mileage,
+Engine Capacity,
+Seats,
+Owner Type,
+Brand,
+Fuel Type,
+Transmission,
 Seller Type
 
 AND GET PREDICTED CAR PRICE INSTANTLY..
