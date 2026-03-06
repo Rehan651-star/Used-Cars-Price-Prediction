@@ -86,7 +86,7 @@ if st.button("Predict Price 🚀"):
             input_df.at[0,seller_col] = 1
 
         numeric_cols = ['year','km_driven','mileage(km/ltr/kg)','engine','seats']
-        input_df[numeric_cols] = scaler.teransform(input_df[numeric_cols])
+        input_df[numeric_cols] = scaler.transform(input_df[numeric_cols])
 
         y_log = model.predict(input_df)
         y_actual = np.exp(y_log)
@@ -118,3 +118,4 @@ st.markdown("---")
 
 # Footer
 st.caption("Technology Stack:  Python • Scikit-Learn • Streamlit")
+
