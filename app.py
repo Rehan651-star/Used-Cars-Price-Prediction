@@ -175,8 +175,8 @@ st.markdown("---")
 st.sidebar.header("Enter Car Details")
 
 brands = [
-"BMW","Audi","Chevrolet","Ford","Honda","Hyundai",
-"Mahindra","Maruti","Mercedes-Benz","Nissan",
+"Nissan","Audi","Chevrolet","Ford","Honda","Hyundai",
+"Mahindra","Maruti","Mercedes-Benz","BMW",
 "Renault","Skoda","Tata","Toyota","Other"
 ]
 
