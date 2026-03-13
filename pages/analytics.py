@@ -115,7 +115,7 @@ else:
 
 st.markdown("---")
 
-df = pd.read_excel(r'D:\ML Projects\Used Cars Price Prediction Project\cleaned_car_datas.csv')
+df = pd.read_excel('cleaned_car_datas.csv')
 
 # price distribution
 df['price_lakh'] = df['selling_price'] / 100000
