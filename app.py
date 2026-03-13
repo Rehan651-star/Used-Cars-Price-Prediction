@@ -108,20 +108,20 @@ with open("scaler.pkl", "rb") as f:
 
 # Brand logos
 brand_logos = {
-    "BMW":"logos/bmw.png",
-    "Audi":"logos/audi.png",
-    "Chevrolet":"logos/chevrolet.webp",
-    "Ford":"logos/ford.jpeg",
-    "Honda":"logos/honda.png",
-    "Hyundai":"logos/hyundai.png",
-    "Mahindra":"logos/mahindra1.jpeg",
-    "Maruti":"logos/maruti.jpeg",
-    "Mercedes-Benz":"logos/mercedes-benz.png",
-    "Nissan":"logos/nissan.png",
-    "Renault":"logos/renault.png",
-    "Skoda":"logos/skoda.jpg",
-    "Tata":"logos/tata.webp",
-    "Toyota":"logos/toyota.png"
+    "BMW":"bmw.png",
+    "Audi":"audi.png",
+    "Chevrolet":"chevrolet.webp",
+    "Ford":"ford.jpeg",
+    "Honda":"honda.png",
+    "Hyundai":"hyundai.png",
+    "Mahindra":"mahindra1.jpeg",
+    "Maruti":"maruti.jpeg",
+    "Mercedes-Benz":"mercedes-benz.png",
+    "Nissan":"nissan.png",
+    "Renault":"renault.png",
+    "Skoda":"skoda.jpg",
+    "Tata":"tata.webp",
+    "Toyota":"toyota.png"
 }
 
 # ── Header with logo ──────────────────────────────────────────────────────────
