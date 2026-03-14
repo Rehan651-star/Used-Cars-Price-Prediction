@@ -593,21 +593,22 @@ if predict_btn:
 
 
 
-    # PDF Download
-    st.write("")
-    st.subheader("Valuation Report")
-    pdf_path = generate_pdf(brand, year, km_driven, mileage, engine, seats,
-                            owner_label, fuel, transmission, seller_type,
-                            price, low, high, dep_df)
-    with open(pdf_path, "rb") as f:
-        pdf_bytes = f.read()
-    os.unlink(pdf_path)
-    st.download_button(
-        label="Download PDF Report",
-        data=pdf_bytes,
-        file_name=f"RideRepublic_{brand}_{year}_Report.pdf",
-        mime="application/pdf"
-    )
+    # Store prediction results in session state for PDF download
+    st.session_state.pdf_ready = True
+    st.session_state.pdf_brand = brand
+    st.session_state.pdf_year = year
+    st.session_state.pdf_km = km_driven
+    st.session_state.pdf_mileage = mileage
+    st.session_state.pdf_engine = engine
+    st.session_state.pdf_seats = seats
+    st.session_state.pdf_owner = owner_label
+    st.session_state.pdf_fuel = fuel
+    st.session_state.pdf_transmission = transmission
+    st.session_state.pdf_seller = seller_type
+    st.session_state.pdf_price = price
+    st.session_state.pdf_low = low
+    st.session_state.pdf_high = high
+    st.session_state.pdf_dep_df = dep_df
 
 # ── Tips ──────────────────────────────────────────────────────────────────────
 st.write("")
@@ -673,6 +674,29 @@ cta_col, _ = st.columns([1, 2])
 with cta_col:
     if st.button("Open Analytics Dashboard"):
         st.switch_page("pages/analytics.py")
+
+# ── Download Button at bottom ────────────────────────────────────────────────
+if st.session_state.get("pdf_ready"):
+    st.write("")
+    st.subheader("Valuation Report")
+    pdf_path = generate_pdf(
+        st.session_state.pdf_brand, st.session_state.pdf_year,
+        st.session_state.pdf_km, st.session_state.pdf_mileage,
+        st.session_state.pdf_engine, st.session_state.pdf_seats,
+        st.session_state.pdf_owner, st.session_state.pdf_fuel,
+        st.session_state.pdf_transmission, st.session_state.pdf_seller,
+        st.session_state.pdf_price, st.session_state.pdf_low,
+        st.session_state.pdf_high, st.session_state.pdf_dep_df
+    )
+    with open(pdf_path, "rb") as f:
+        pdf_bytes = f.read()
+    os.unlink(pdf_path)
+    st.download_button(
+        label="Download PDF Report",
+        data=pdf_bytes,
+        file_name=f"RideRepublic_{st.session_state.pdf_brand}_{st.session_state.pdf_year}_Report.pdf",
+        mime="application/pdf"
+    )
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown(
