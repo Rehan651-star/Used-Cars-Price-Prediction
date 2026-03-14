@@ -207,14 +207,13 @@ stats = [
     (f"{int(df['km_driven'].median()/1000)}K km", "Median KM"),
 ]
 for col, (val, label) in zip([k1,k2,k3,k4,k5], stats):
-    with col:
-        st.markdown(
-            f'<div class="stat-card">'
-            f'<div class="stat-value">{val}</div>'
-            f'<div class="stat-label">{label}</div>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
+    col.markdown(
+        f'<div class="stat-card">'
+        f'<div class="stat-value">{val}</div>'
+        f'<div class="stat-label">{label}</div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
 
 st.write("")
 
