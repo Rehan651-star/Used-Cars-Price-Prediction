@@ -42,7 +42,7 @@ with st.sidebar:
     mode = sac.switch(label='Dark Mode', align='start', size='md')
 
 ACCENT = "#E8B84B"
-ACCENT2 = "#FF6B6B"
+ACCENT2 = "#E8B84B"
 
 # ── CSS ───────────────────────────────────────────────────────────────────────
 if mode:
