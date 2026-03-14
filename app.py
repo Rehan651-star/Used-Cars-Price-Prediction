@@ -38,11 +38,20 @@ def get_logo_base64(path="riderepublic_logo.png"):
 logo_b64 = get_logo_base64()
 
 # ── Theme Toggle - NO on_label/off_label to avoid keyboard_double bug ────────
+# Custom theme toggle using session state
+if "dark_mode" not in st.session_state:
+    st.session_state.dark_mode = False
+
 with st.sidebar:
-    mode = sac.switch(label='Dark Mode', align='start', size='md')
+    toggle_label = "🌙 Dark Mode" if not st.session_state.dark_mode else "☀️ Light Mode"
+    if st.sidebar.button(toggle_label, key="theme_toggle"):
+        st.session_state.dark_mode = not st.session_state.dark_mode
+        st.rerun()
+
+mode = st.session_state.dark_mode
 
 ACCENT = "#E8B84B"
-ACCENT2 = "#E8B84B"
+ACCENT2 = "#FF6B6B"
 
 # ── CSS ───────────────────────────────────────────────────────────────────────
 if mode:
@@ -213,7 +222,7 @@ else:
         background: {TEXT} !important; color: white !important;
     }}
     .hero-section {{
-        background: linear-gradient(135deg, #1A1A2E 0%, #2D2D5E 100%);
+        background: linear-gradient(135deg, #111122 0%, #1A1A3E 100%);
         border-radius: 20px; padding: 2.2rem 2.8rem; margin-bottom: 1.5rem;
         position: relative; overflow: hidden;
     }}
@@ -365,7 +374,7 @@ st.markdown(f"""
         <div>{logo_img}</div>
         <div>
             <div class="hero-badge">AI-POWERED VALUATION</div>
-            <h1 class="hero-title">Ride<span class="hero-accent">Republic</span></h1>
+            <h1 class="hero-title"><span style="color:#FFFFFF;">Ride</span><span class="hero-accent">Republic</span></h1>
             <p class="hero-sub">Know your car's true market value in seconds, powered by Machine Learning</p>
         </div>
     </div>
