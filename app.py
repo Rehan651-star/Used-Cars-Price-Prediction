@@ -638,16 +638,13 @@ if predict_btn:
         with open(pdf_path, "rb") as f:
             pdf_bytes = f.read()
 
-        dl_col, _ = st.columns([1, 2])
-        with dl_col:
-            st.download_button(
-                label="Download PDF Report",
-                data=pdf_bytes,
-                file_name=f"RideRepublic_{brand}_{year}_Report.pdf",
-                mime="application/pdf",
-                use_container_width=True
-            )
-        os.unlink(pdf_path)
+       st.download_button(
+    label="Download PDF Report",
+    data=pdf_bytes,
+    file_name=f"RideRepublic_{brand}_{year}_Report.pdf",
+    mime="application/pdf",
+)
+os.unlink(pdf_path)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
