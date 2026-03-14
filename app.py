@@ -414,7 +414,7 @@ if brand in brand_logos:
         </div>""", unsafe_allow_html=True)
 
 # ── Predict Button ────────────────────────────────────────────────────────────
-st.markdown("<p class='section-header'>Valuation Engine</p>", unsafe_allow_html=True)
+st.write("**Valuation Engine**")
 pcol, _ = st.columns([1, 2])
 with pcol:
     predict_btn = st.button("Predict Resale Price", use_container_width=True)
@@ -505,7 +505,7 @@ if predict_btn:
             st.plotly_chart(fig_gauge, use_container_width=True)
 
         with g2:
-            st.markdown("<p class='section-header'>Depreciation Forecast</p>", unsafe_allow_html=True)
+            st.write("**Depreciation Forecast**")
             fig_dep = go.Figure()
             fig_dep.add_trace(go.Bar(
                 y=[str(y) for y in dep_df["Year"]],
@@ -527,9 +527,9 @@ if predict_btn:
             )
             st.plotly_chart(fig_dep, use_container_width=True)
 
-        # ── PDF Download - clean single button, no None boxes ─────────────────
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("<p class='section-header'>Valuation Report</p>", unsafe_allow_html=True)
+        # ── PDF Download ──────────────────────────────────────────────────────
+        st.write("")
+        st.write("**Valuation Report**")
 
         def generate_pdf(brand, year, km_driven, mileage, engine, seats,
                          owner_label, fuel, transmission, seller_type,
@@ -649,7 +649,7 @@ if predict_btn:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Tips ──────────────────────────────────────────────────────────────────────
-st.markdown("<p class='section-header'>Tips To Maintain Resale Value</p>", unsafe_allow_html=True)
+st.write("**Tips To Maintain Resale Value**")
 tips_data = [
     ("Regular Servicing", "Maintain proper service records to build buyer trust."),
     ("Low Mileage", "Cars with lower mileage usually sell at higher prices."),
@@ -668,7 +668,7 @@ for i, (title, desc) in enumerate(tips_data):
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ── About ─────────────────────────────────────────────────────────────────────
-st.markdown("<p class='section-header'>About RideRepublic</p>", unsafe_allow_html=True)
+st.write("**About RideRepublic**")
 ac1, ac2 = st.columns([3, 2])
 with ac1:
     txt_opacity = "0.75"
