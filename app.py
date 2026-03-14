@@ -299,8 +299,8 @@ if "reset_counter" not in st.session_state:
 rc = st.session_state.reset_counter
 
 brand        = st.sidebar.selectbox("Brand", brands, index=0, key=f"brand_{rc}")
-year         = st.sidebar.number_input("Year", 2000, 2026, 2018, key=f"year_{rc}")
-km_driven    = st.sidebar.number_input("KM Driven", 0, 300000, 40000, key=f"km_{rc}")
+year         = st.sidebar.number_input("Year", 1983, 2026, 2018, key=f"year_{rc}")
+km_driven    = st.sidebar.number_input("KM Driven", 0, 300000, 10000, key=f"km_{rc}")
 mileage      = st.sidebar.number_input("Mileage (km/l)", 5.0, 40.0, 18.0, key=f"mileage_{rc}")
 engine       = st.sidebar.number_input("Engine (CC)", 800, 5000, 1500, key=f"engine_{rc}")
 seats        = st.sidebar.number_input("Seats", 2, 10, 5, key=f"seats_{rc}")
