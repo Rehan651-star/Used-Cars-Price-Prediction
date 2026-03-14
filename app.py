@@ -343,14 +343,13 @@ st.markdown(
 col1, col2, col3 = st.columns(3)
 kpis = [("82%","Model Accuracy"), ("14+","Car Brands"), ("8,000+","Cars Trained On")]
 for col, (val, label) in zip([col1,col2,col3], kpis):
-    with col:
-        st.markdown(
-            f'<div class="kpi-card">'
-            f'<div class="kpi-value">{val}</div>'
-            f'<div class="kpi-label">{label}</div>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
+    col.markdown(
+        f'<div class="kpi-card">'
+        f'<div class="kpi-value">{val}</div>'
+        f'<div class="kpi-label">{label}</div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
 
 st.write("")
 
@@ -359,17 +358,16 @@ if brand in brand_logos:
     bcol1, bcol2 = st.columns([1, 5])
     with bcol1:
         st.image(brand_logos[brand], width=90)
-    with bcol2:
-        brand_info = f"{year}  |  {fuel}  |  {transmission}  |  {owner_label}"
-        name_c = "#FFFFFF" if mode else "#1A1A2E"
-        spec_c = "#6666AA" if mode else "#999999"
-        st.markdown(
-            f'<div style="padding:0.8rem 0;">'
-            f'<p style="font-size:1.3rem;font-weight:700;color:{name_c};margin:0;">{brand}</p>'
-            f'<p style="font-size:0.82rem;color:{spec_c};margin:3px 0 0 0;">{brand_info}</p>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
+    brand_info = f"{year}  |  {fuel}  |  {transmission}  |  {owner_label}"
+    name_c = "#FFFFFF" if mode else "#1A1A2E"
+    spec_c = "#6666AA" if mode else "#999999"
+    bcol2.markdown(
+        f'<div style="padding:0.8rem 0;">'
+        f'<p style="font-size:1.3rem;font-weight:700;color:{name_c};margin:0;">{brand}</p>'
+        f'<p style="font-size:0.82rem;color:{spec_c};margin:3px 0 0 0;">{brand_info}</p>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
 
 # ── Predict Button ────────────────────────────────────────────────────────────
 st.subheader("Valuation Engine")
@@ -459,8 +457,6 @@ def generate_pdf(brand, year, km_driven, mileage, engine, seats,
     tips = [
         "Regular Servicing: Maintain proper service records to build buyer trust.",
         "Low Mileage: Cars with lower mileage usually sell at higher prices.",
-        "Clean Interior & Exterior: A well-maintained car attracts better resale offers.",
-        "Accident-Free Record: Vehicles without accident history maintain higher value.",
         "Original Parts: Avoid replacing parts with non-genuine components.",
     ]
     pdf.set_font("Helvetica", "", 8)
@@ -515,33 +511,30 @@ if predict_btn:
 
     # Result cards
     r1, r2, r3 = st.columns(3)
-    with r1:
-        st.markdown(
-            f'<div class="result-card">'
-            f'<div class="result-label">Estimated Resale Value</div>'
-            f'<div class="result-price">Rs.{price_lakh:.2f}L</div>'
-            f'<div class="result-sub">~ Rs. {int(price):,}</div>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
-    with r2:
-        st.markdown(
-            f'<div class="result-card">'
-            f'<div class="result-label">Price Range</div>'
-            f'<div class="result-price" style="font-size:1.8rem;">Rs.{low_lakh:.1f}L - Rs.{high_lakh:.1f}L</div>'
-            f'<div class="result-sub">Conservative - <span>Optimistic</span></div>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
-    with r3:
-        st.markdown(
-            f'<div class="result-card">'
-            f'<div class="result-label">5-Year Depreciation</div>'
-            f'<div class="result-price" style="color:#FF6B6B;font-size:2.2rem;">-{dep_pct}%</div>'
-            f'<div class="result-sub">Car Age: <span>{age} yrs</span></div>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
+    r1.markdown(
+        f'<div class="result-card">'
+        f'<div class="result-label">Estimated Resale Value</div>'
+        f'<div class="result-price">Rs.{price_lakh:.2f}L</div>'
+        f'<div class="result-sub">~ Rs. {int(price):,}</div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
+    r2.markdown(
+        f'<div class="result-card">'
+        f'<div class="result-label">Price Range</div>'
+        f'<div class="result-price" style="font-size:1.8rem;">Rs.{low_lakh:.1f}L - Rs.{high_lakh:.1f}L</div>'
+        f'<div class="result-sub">Conservative - <span>Optimistic</span></div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
+    r3.markdown(
+        f'<div class="result-card">'
+        f'<div class="result-label">5-Year Depreciation</div>'
+        f'<div class="result-price" style="color:#FF6B6B;font-size:2.2rem;">-{dep_pct}%</div>'
+        f'<div class="result-sub">Car Age: <span>{age} yrs</span></div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
 
     st.write("")
 
@@ -624,18 +617,16 @@ tips_data = [
 tc1, tc2 = st.columns(2)
 for i, (title, desc) in enumerate(tips_data):
     target = tc1 if i % 2 == 0 else tc2
-    with target:
-        st.markdown(
-            f'<div class="tip-card"><strong>{title}:</strong> {desc}</div>',
-            unsafe_allow_html=True
-        )
+    target.markdown(
+        f'<div class="tip-card"><strong>{title}:</strong> {desc}</div>',
+        unsafe_allow_html=True
+    )
 
 # ── About ─────────────────────────────────────────────────────────────────────
 st.write("")
 st.subheader("About RideRepublic")
 ac1, ac2 = st.columns([3, 2])
-with ac1:
-    st.markdown(
+ac1.markdown(
         '<div class="about-card">'
         '<p style="line-height:1.8;opacity:0.75;margin:0 0 1rem 0;font-size:0.92rem;">'
         'RideRepublic is an AI-powered car valuation platform that estimates the resale price '
@@ -656,9 +647,8 @@ with ac1:
         '</div></div>',
         unsafe_allow_html=True
     )
-with ac2:
-    val_c = "#E8B84B" if mode else "#1A1A2E"
-    st.markdown(
+val_c = "#E8B84B" if mode else "#1A1A2E"
+ac2.markdown(
         f'<div class="about-card">'
         f'<p style="font-weight:700;margin:0 0 1rem 0;font-size:0.95rem;">Model Performance</p>'
         f'<table class="perf-table">'
@@ -686,4 +676,6 @@ st.markdown(
     ' Streamlit &nbsp;&nbsp; Plotly &nbsp;&nbsp; FPDF2'
     '</div>',
     unsafe_allow_html=True
-)
+)ior & Exterior: A well-maintained car attracts better resale offers.",
+        "Accident-Free Record: Vehicles without accident history maintain higher value.",
+        
