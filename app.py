@@ -276,7 +276,7 @@ if logo_b64:
     st.sidebar.markdown(
         f'<div style="text-align:center;padding:0.8rem 0 0.3rem 0;">'
         f'<img src="data:image/png;base64,{logo_b64}" '
-        f'style="width:100px;height:100px;border-radius:50%;object-fit:cover;'
+        f'style="width:90px;height:90px;border-radius:50%;object-fit:cover;'
         f'box-shadow:0 4px 14px rgba(232,184,75,0.25);" />'
         f'<p style="margin:6px 0 0 0;font-weight:800;font-size:0.9rem;color:{name_color};">'
         f'RideRepublic</p></div>',
