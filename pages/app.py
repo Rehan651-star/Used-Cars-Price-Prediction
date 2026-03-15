@@ -45,7 +45,7 @@ with st.sidebar:
         st.session_state.dark_mode = not st.session_state.dark_mode
         st.rerun()
     if st.sidebar.button("🏠 Home", key="home_btn"):
-        st.switch_page("Home.py")
+        st.switch_page("home.py")
 
 mode = st.session_state.dark_mode
 ACCENT = "#E8B84B"
