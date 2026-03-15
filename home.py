@@ -282,22 +282,43 @@ if logo_b64:
 
 car_html = f'<img src="data:image/png;base64,{car_b64}" class="car-img" />' if car_b64 else ''
 
-bg_img_tag = f'<img src="data:image/png;base64,{car_b64}" class="hero-bg-img" />' if car_b64 else ''
+car_src = f"data:image/png;base64,{car_b64}" if car_b64 else ""
 
-st.markdown(
-    f'<div class="hero-wrap">'
-    f'{bg_img_tag}'
-    f'<div class="hero-overlay"></div>'
-    f'<div class="hero-content">'
-    f'{logo_img}'
-    f'<div class="hero-badge">AI-POWERED CAR VALUATION</div>'
-    f'<h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#FFFFFF;margin:0 0 0.2rem 0;letter-spacing:-1px;line-height:1.1;">Ride<span style="color:#E8B84B;">Republic</span></h1>'
-    f'<h2 style="font-size:clamp(1rem,3vw,1.6rem);font-weight:700;color:rgba(255,255,255,0.85);margin:0 0 0.8rem 0;line-height:1.3;">Know Your Car\'s <span style="color:#E8B84B;">True Value</span> Instantly</h2>'
-    f'<p class="hero-sub">Predict your used car\'s resale price using Machine Learning. Accurate, fast and completely free.</p>'
-    f'</div>'
-    f'</div>',
-    unsafe_allow_html=True
-)
+hero_html = f"""
+<div style="background:linear-gradient(135deg,#0A1F10 0%,#1A3A22 60%,#0F2018 100%);
+     border-radius:24px;margin-bottom:1.5rem;border:1px solid #1E4A2A;
+     display:flex;align-items:center;justify-content:space-between;
+     min-height:380px;overflow:hidden;">
+  <div style="padding:clamp(1.5rem,4vw,3rem);flex:1;min-width:0;z-index:2;">
+    {logo_img}
+    <div style="display:inline-flex;background:rgba(232,184,75,0.15);
+         border:1px solid rgba(232,184,75,0.4);color:#E8B84B;
+         border-radius:50px;padding:5px 16px;font-size:0.75rem;
+         font-weight:700;letter-spacing:1.5px;margin-bottom:1rem;
+         text-transform:uppercase;">AI-POWERED CAR VALUATION</div>
+    <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:900;
+         color:#FFFFFF;margin:0 0 0.3rem 0;letter-spacing:-1px;line-height:1.1;">
+      Ride<span style="color:#E8B84B;">Republic</span>
+    </h1>
+    <h2 style="font-size:clamp(1rem,2.5vw,1.5rem);font-weight:700;
+         color:rgba(255,255,255,0.9);margin:0 0 0.8rem 0;line-height:1.3;">
+      Know Your Car's <span style="color:#E8B84B;">True Value</span> Instantly
+    </h2>
+    <p style="font-size:clamp(0.85rem,2vw,1rem);color:rgba(255,255,255,0.6);
+         line-height:1.7;margin:0;max-width:420px;">
+      Predict your used car's resale price using Machine Learning.
+      Accurate, fast and completely free.
+    </p>
+  </div>
+  <div style="flex:1;display:flex;align-items:flex-end;
+       justify-content:flex-end;padding:0;margin:0;min-width:0;">
+    <img src="{car_src}" style="width:100%;max-width:500px;
+         object-fit:contain;object-position:right bottom;
+         display:block;" />
+  </div>
+</div>
+"""
+st.markdown(hero_html, unsafe_allow_html=True)
 
 # ── Get Started Button ────────────────────────────────────────────────────────
 _, btn_col, _ = st.columns([1, 3, 1])
