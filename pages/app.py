@@ -319,7 +319,7 @@ if st.sidebar.button("Reset Inputs"):
     st.rerun()
 st.sidebar.markdown(f"<hr style='border:none;border-top:1px solid {hr_color};margin:0.5rem 0;'>", unsafe_allow_html=True)
 if st.sidebar.button("Home"):
-    st.switch_page("Home.py")
+    st.switch_page("home.py")
 
 # ── Hero ──────────────────────────────────────────────────────────────────────
 logo_img = ""
