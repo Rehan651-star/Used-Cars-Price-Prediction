@@ -292,7 +292,7 @@ st.markdown(
 btn_col1, btn_col2, btn_col3 = st.columns([1, 1, 1])
 with btn_col2:
     if st.button("Get Started - Predict Now", use_container_width=True):
-        st.switch_page("app.py")
+        st.switch_page("pages/app.py")
 
 st.write("")
 
@@ -378,10 +378,10 @@ st.write("")
 c1, c2, c3 = st.columns([1, 1, 1])
 with c1:
     if st.button("Predict Car Price", use_container_width=True):
-        st.switch_page("app.py")
+        st.switch_page("pages/app.py")
 with c2:
     if st.button("View Analytics", use_container_width=True):
-        st.switch_page("analytics.py")
+        st.switch_page("pages/analytics.py")
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown(
