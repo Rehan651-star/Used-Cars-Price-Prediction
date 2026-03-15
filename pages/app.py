@@ -462,4 +462,248 @@ def generate_pdf(brand, year, km_driven, mileage, engine, seats,
         pdf.cell(95, 6, "  Rs. " + str(round(row["Estimated Value"]/100000, 2)) + " Lakhs", fill=True)
         pdf.ln(6)
     pdf.ln(2)
-    sec("T
+    sec("Tips To Maintain Good Resale Value")
+    tips = [
+        "Regular Servicing: Maintain proper service records to build buyer trust.",
+        "Low Mileage: Cars with lower mileage usually sell at higher prices.",
+        "Clean Interior & Exterior: A well-maintained car attracts better resale offers.",
+        "Accident-Free Record: Vehicles without accident history maintain higher value.",
+        "Original Parts: Avoid replacing parts with non-genuine components.",
+    ]
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_text_color(30, 30, 30)
+    for tip in tips:
+        pdf.set_x(10)
+        pdf.multi_cell(W, 5, "  * " + tip)
+        pdf.set_x(10)
+    pdf.set_y(-18)
+    pdf.set_draw_color(200, 200, 200)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.set_font("Helvetica", "I", 8)
+    pdf.set_text_color(120, 120, 120)
+    pdf.cell(W, 8, "RideRepublic 2026  |  AI-Powered Car Valuation  |  For reference purposes only.", align="C")
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+    pdf.output(tmp.name)
+    return tmp.name
+
+# ── Prediction Logic ──────────────────────────────────────────────────────────
+if predict_btn:
+    with st.spinner("Analyzing market data..."):
+        input_df = pd.DataFrame(columns=model.feature_names_in_)
+        input_df.loc[0] = 0
+        input_df.at[0,'year'] = year
+        input_df.at[0,'km_driven'] = km_driven
+        input_df.at[0,'mileage(km/ltr/kg)'] = mileage
+        input_df.at[0,'engine'] = engine
+        input_df.at[0,'seats'] = seats
+        input_df.at[0,'owner'] = owner
+        for col_name, val in [
+            (f"brand_{brand}", 1), (f"fuel_{fuel}", 1),
+            (f"transmission_{transmission}", 1), (f"seller_type_{seller_type}", 1)
+        ]:
+            if col_name in input_df.columns:
+                input_df.at[0, col_name] = val
+        numeric_cols = ['year','km_driven','mileage(km/ltr/kg)','engine','seats']
+        input_df[numeric_cols] = scaler.transform(input_df[numeric_cols])
+        y_log  = model.predict(input_df)
+        price  = round(np.exp(y_log)[0], 0)
+        low    = round(price * 0.9)
+        high   = round(price * 1.1)
+        price_lakh = price / 100000
+        low_lakh   = low / 100000
+        high_lakh  = high / 100000
+        age        = 2026 - year
+        dep_pct    = round((1 - (0.9**5)) * 100, 1)
+        dep_years  = [year + i for i in range(6)]
+        dep_prices = [price * (0.9 ** i) for i in range(6)]
+        dep_df     = pd.DataFrame({"Year": dep_years, "Estimated Value": dep_prices})
+
+    st.write("")
+
+    r1, r2, r3 = st.columns(3)
+    r1.markdown(
+        f'<div class="result-card">'
+        f'<div class="result-label">Estimated Resale Value</div>'
+        f'<div class="result-price">Rs.{price_lakh:.2f}L</div>'
+        f'<div class="result-sub">~ Rs. {int(price):,}</div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
+    r2.markdown(
+        f'<div class="result-card">'
+        f'<div class="result-label">Price Range</div>'
+        f'<div class="result-price" style="font-size:1.8rem;">Rs.{low_lakh:.1f}L - Rs.{high_lakh:.1f}L</div>'
+        f'<div class="result-sub">Conservative - <span>Optimistic</span></div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
+    r3.markdown(
+        f'<div class="result-card">'
+        f'<div class="result-label">5-Year Depreciation</div>'
+        f'<div class="result-price" style="color:#FF6B6B;font-size:2.2rem;">-{dep_pct}%</div>'
+        f'<div class="result-sub">Car Age: <span>{age} yrs</span></div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
+
+    st.write("")
+
+    g1, g2 = st.columns([1, 2])
+    with g1:
+        fig_gauge = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=price_lakh,
+            number={'prefix': "Rs.", 'suffix': " L", 'valueformat': '.2f',
+                    'font': {'size': 24, 'color': ACCENT}},
+            title={'text': "Market Value (Lakhs)", 'font': {'size': 12, 'color': '#888'}},
+            gauge={
+                'axis': {'range': [0, 50], 'tickcolor': '#444'},
+                'bar': {'color': ACCENT, 'thickness': 0.22},
+                'bgcolor': 'rgba(0,0,0,0)', 'bordercolor': 'rgba(0,0,0,0)',
+                'steps': [
+                    {'range': [0, 15], 'color': 'rgba(255,107,107,0.1)'},
+                    {'range': [15, 30], 'color': 'rgba(232,184,75,0.07)'},
+                    {'range': [30, 50], 'color': 'rgba(113,239,153,0.07)'},
+                ],
+            }
+        ))
+        fig_gauge.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+            height=240, margin=dict(t=30, b=0, l=20, r=20), font={'color': '#888'}
+        )
+        st.plotly_chart(fig_gauge, use_container_width=True)
+
+    with g2:
+        st.subheader("Depreciation Forecast")
+        fig_dep = go.Figure()
+        fig_dep.add_trace(go.Bar(
+            y=[str(y) for y in dep_df["Year"]],
+            x=dep_df["Estimated Value"] / 100000,
+            orientation='h',
+            marker=dict(
+                color=dep_df["Estimated Value"] / 100000,
+                colorscale=[[0,'#FF6B6B'],[0.5,ACCENT],[1,'#71ef99']],
+                showscale=False
+            ),
+            hovertemplate="Year: %{y}<br>Value: Rs.%{x:.2f}L<extra></extra>"
+        ))
+        fig_dep.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+            height=240, margin=dict(t=10, b=10, l=10, r=20),
+            xaxis=dict(title="Rs. Lakhs", color='#888', gridcolor='rgba(128,128,128,0.1)'),
+            yaxis=dict(color='#888', gridcolor='rgba(0,0,0,0)'),
+            font={'color': '#888'}
+        )
+        st.plotly_chart(fig_dep, use_container_width=True)
+
+    # Store for PDF
+    st.session_state.pdf_ready = True
+    st.session_state.pdf_brand = brand
+    st.session_state.pdf_year = year
+    st.session_state.pdf_km = km_driven
+    st.session_state.pdf_mileage = mileage
+    st.session_state.pdf_engine = engine
+    st.session_state.pdf_seats = seats
+    st.session_state.pdf_owner = owner_label
+    st.session_state.pdf_fuel = fuel
+    st.session_state.pdf_transmission = transmission
+    st.session_state.pdf_seller = seller_type
+    st.session_state.pdf_price = price
+    st.session_state.pdf_low = low
+    st.session_state.pdf_high = high
+    st.session_state.pdf_dep_df = dep_df
+
+# ── Tips ──────────────────────────────────────────────────────────────────────
+st.write("")
+st.subheader("Tips To Maintain Resale Value")
+tips_data = [
+    ("Regular Servicing", "Maintain proper service records to build buyer trust."),
+    ("Low Mileage", "Cars with lower mileage usually sell at higher prices."),
+    ("Clean Interior & Exterior", "A well-maintained car attracts better resale offers."),
+    ("Accident-Free Record", "Vehicles without accident history maintain higher value."),
+    ("Original Parts", "Avoid replacing parts with non-genuine components."),
+]
+tc1, tc2 = st.columns(2)
+for i, (title, desc) in enumerate(tips_data):
+    target = tc1 if i % 2 == 0 else tc2
+    target.markdown(
+        f'<div class="tip-card"><strong>{title}:</strong> {desc}</div>',
+        unsafe_allow_html=True
+    )
+
+# ── About ─────────────────────────────────────────────────────────────────────
+st.write("")
+st.subheader("About RideRepublic")
+ac1, ac2 = st.columns([3, 2])
+ac1.markdown(
+    '<div class="about-card">'
+    '<p style="line-height:1.8;opacity:0.75;margin:0 0 1rem 0;font-size:0.92rem;">'
+    'RideRepublic is an AI-powered car valuation platform that estimates the resale price '
+    'of used cars based on key vehicle attributes. Developed as a B.Tech Final Year Project, it '
+    'demonstrates end-to-end machine learning from data preprocessing to live deployment.'
+    '</p>'
+    '<p style="font-weight:700;margin:0 0 0.6rem 0;opacity:0.5;font-size:0.7rem;'
+    'text-transform:uppercase;letter-spacing:1.2px;">Model Inputs</p>'
+    '<div>'
+    '<span class="about-tag">Year</span>'
+    '<span class="about-tag">KM Driven</span>'
+    '<span class="about-tag">Mileage</span>'
+    '<span class="about-tag">Engine CC</span>'
+    '<span class="about-tag">Fuel Type</span>'
+    '<span class="about-tag">Transmission</span>'
+    '<span class="about-tag">Brand</span>'
+    '<span class="about-tag">Ownership</span>'
+    '</div></div>',
+    unsafe_allow_html=True
+)
+val_c = "#E8B84B" if mode else "#1A1A2E"
+ac2.markdown(
+    f'<div class="about-card">'
+    f'<p style="font-weight:700;margin:0 0 1rem 0;font-size:0.95rem;">Model Performance</p>'
+    f'<table class="perf-table">'
+    f'<thead><tr><th>Metric</th><th>Value</th></tr></thead>'
+    f'<tbody>'
+    f'<tr><td class="name">Train R2</td><td class="val">0.83</td></tr>'
+    f'<tr><td class="name">Test R2</td><td class="val">0.82</td></tr>'
+    f'<tr><td class="name">MAE</td><td class="val">Rs. 77,695</td></tr>'
+    f'<tr><td class="name">RMSE</td><td class="val">Rs. 1,06,605</td></tr>'
+    f'</tbody></table></div>',
+    unsafe_allow_html=True
+)
+
+# ── Bottom Buttons ────────────────────────────────────────────────────────────
+st.write("")
+cta_col1, cta_col2, _ = st.columns([1, 1, 1])
+with cta_col1:
+    if st.button("Open Analytics Dashboard"):
+        st.switch_page("pages/analytics.py")
+with cta_col2:
+    if st.session_state.get("pdf_ready"):
+        pdf_path = generate_pdf(
+            st.session_state.pdf_brand, st.session_state.pdf_year,
+            st.session_state.pdf_km, st.session_state.pdf_mileage,
+            st.session_state.pdf_engine, st.session_state.pdf_seats,
+            st.session_state.pdf_owner, st.session_state.pdf_fuel,
+            st.session_state.pdf_transmission, st.session_state.pdf_seller,
+            st.session_state.pdf_price, st.session_state.pdf_low,
+            st.session_state.pdf_high, st.session_state.pdf_dep_df
+        )
+        with open(pdf_path, "rb") as pdf_file:
+            pdf_bytes = pdf_file.read()
+        os.unlink(pdf_path)
+        st.download_button(
+            label="Download PDF Report",
+            data=pdf_bytes,
+            file_name="RideRepublic_" + str(st.session_state.pdf_brand) + "_" + str(st.session_state.pdf_year) + "_Report.pdf",
+            mime="application/pdf",
+            use_container_width=True
+        )
+
+# ── Footer ────────────────────────────────────────────────────────────────────
+st.markdown(
+    '<div class="footer-bar">'
+    'RideRepublic &copy; 2026 &nbsp;&nbsp; Python &nbsp;&nbsp; Scikit-Learn &nbsp;&nbsp;'
+    ' Streamlit &nbsp;&nbsp; Plotly &nbsp;&nbsp; FPDF2'
+    '</div>',
+    unsafe_allow_html=True
+)
