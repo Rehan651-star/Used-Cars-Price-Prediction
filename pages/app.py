@@ -634,7 +634,7 @@ ac1.markdown(
     '<div class="about-card">'
     '<p style="line-height:1.8;opacity:0.75;margin:0 0 1rem 0;font-size:0.92rem;">'
     'RideRepublic is an AI-powered car valuation platform that estimates the resale price '
-    'of used cars based on key vehicle attributes. Developed as a B.Tech Final Year Project, it '
+    'of used cars based on key vehicle attributes. Developed as a BCA Final Year Project, it '
     'demonstrates end-to-end machine learning from data preprocessing to live deployment.'
     '</p>'
     '<p style="font-weight:700;margin:0 0 0.6rem 0;opacity:0.5;font-size:0.7rem;'
